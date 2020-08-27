@@ -33,8 +33,6 @@ const keepMachineAwake = async (req, res) => {
 
   asyncForEach(activeMachines, async (machine) => {
     await fetch(`${machine.url}${req.body.payload.path}`)
-      .then((res) => res.json())
-      .then((json) => console.log(json))
       .catch((error) => {
         console.log(error);
       });
