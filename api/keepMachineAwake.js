@@ -31,7 +31,7 @@ const keepMachineAwake = async (req, res) => {
     return res.status(200).send({ message: `No active machines found!` });
   }
 
-  asyncForEach(activeMachines, async (machine) => {
+  await asyncForEach(activeMachines, async (machine) => {
     await fetch(`${machine.url}${req.body.payload.path}`)
       .catch((error) => {
         console.log(error);
