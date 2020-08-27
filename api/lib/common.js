@@ -47,7 +47,32 @@ const loginUserResponse = (user) => {
   return response;
 };
 
+const getMachines = async (where) => {
+  return await client
+    .query({
+      operationName: "machine",
+      query: `query machine($where: machine_bool_exp, $limit: Int, $order_by: [machine_order_by!]) {
+        machine(where: $where, limit: $limit, order_by: $order_by) {
+          id
+          name
+          url
+          status
+          last_activity
+          notes
+        }
+      }`,
+      variables: { where },
+    })
+    .then((res) => {
+      if (res.data && res.data.machine && res.data.machine.length) {
+        return res.data.machine;
+      }
+      return null;
+    });
+};
+
 module.exports = {
   getUser,
   loginUserResponse,
+  getMachines,
 };
