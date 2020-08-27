@@ -1,0 +1,22 @@
+{
+  "name": "hasura_vercel_functions",
+  "description": "Custom functions to use with Hasura and deploy to Vercel",
+  "scripts": {
+    "lint": "eslint ."
+  },
+  "engines": {
+    "node": "14.x"
+  },
+  "dependencies": {
+    "bcrypt": "^5.0.0",
+    "cookie": "^0.4.1",
+    "fetchql": "^3.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "node-fetch": "^2.6.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.7.0",
+    "eslint-plugin-promise": "^4.0.1"
+  },
+  "private": true
+}
