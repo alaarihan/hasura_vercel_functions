@@ -1,3 +1,4 @@
+const fetch = require("node-fetch");
 const { getMachines } = require("./lib/common");
 
 const keepMachineAwake = async (req, res) => {
@@ -5,12 +6,18 @@ const keepMachineAwake = async (req, res) => {
     return res.status(403).send("Forbidden!");
   }
 
-  if(!req.headers || !req.headers.key || req.headers.key !== process.env.APP_KEY){
+  if (
+    !req.headers ||
+    !req.headers.key ||
+    req.headers.key !== process.env.APP_KEY
+  ) {
     return res.status(401).json({ message: "Not authorized!" });
   }
 
-  if(!req.body.path){
-    return res.status(503).json({ message: "you should include the path in the request body!" });
+  if (!req.body.payload.path) {
+    return res
+      .status(503)
+      .json({ message: "you should include the path in the request body!" });
   }
 
   const activeMachines = await getMachines({ status: { _eq: "ACTIVE" } });
@@ -19,8 +26,9 @@ const keepMachineAwake = async (req, res) => {
   }
 
   activeMachines.forEach((machine) => {
-    fetch(`${machine.url}${req.body.path}`)
-      .then((res) => { console.log(res.text()); return true})
+    fetch(`${machine.url}${req.body.payload.path}`)
+      .then((res) => res.json())
+      .then((json) => console.log(json))
       .catch((error) => {
         console.log(error);
       });
