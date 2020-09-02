@@ -1,5 +1,5 @@
 const fetch = require("node-fetch");
-const { getMachines } = require("./lib/common");
+const { getMachines, getSetting } = require("./lib/common");
 
 async function asyncForEach(array, callback) {
   for (let index = 0; index < array.length; index++) {
@@ -24,6 +24,15 @@ const keepMachineAwake = async (req, res) => {
     return res
       .status(503)
       .json({ message: "you should include the path in the request body!" });
+  }
+
+  const stopUntil = await getSetting('stop_until', 'timestamp')
+  if(stopUntil){
+    let timeNow = new Date()
+    const stopToDate = new Date(stopUntil)
+    if(timeNow < stopToDate){
+      return res.status(200).send({ message: `Temporary stopped by setting 'stop_until'` });
+    }
   }
 
   const activeMachines = await getMachines({ status: { _eq: "ACTIVE" } });
