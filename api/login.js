@@ -26,6 +26,7 @@ const login = async (req, res) => {
     res.setHeader('Set-Cookie', cookie.serialize('refresh_token', String(userToken.refresh_token), {
       httpOnly: true,
       secure: true,
+      sameSite: 'none',
       maxAge: 60 * 60 * 24 * 30 // 1 month
     }));
   }
