@@ -71,8 +71,36 @@ const getMachines = async (where) => {
     });
 };
 
+const getSetting = async (name, type = "value") => {
+  let variables = {
+    where: { name: { _eq: name } },
+  };
+  return await client
+    .query({
+      operationName: "setting",
+      query: `query setting($order_by: [setting_order_by!], $where: setting_bool_exp){
+        setting(order_by: $order_by, where: $where) {
+          id
+          name
+        value
+        int
+        float
+        timestamp
+        }
+      }`,
+      variables,
+    })
+    .then((res) => {
+      if (res.data && res.data.setting && res.data.setting.length) {
+        return res.data.setting[0][type];
+      }
+      return null;
+    });
+};
+
 module.exports = {
   getUser,
   loginUserResponse,
   getMachines,
+  getSetting,
 };
