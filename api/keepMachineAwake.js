@@ -26,12 +26,12 @@ const keepMachineAwake = async (req, res) => {
       .json({ message: "you should include the path in the request body!" });
   }
 
-  const stopUntil = await getSetting('stop_until', 'timestamp')
+  const stopUntil = await getSetting('stop_keep_awake_until', 'timestamp')
   if(stopUntil){
     let timeNow = new Date()
     const stopToDate = new Date(stopUntil)
     if(timeNow < stopToDate){
-      return res.status(200).send({ message: `Temporary stopped by setting 'stop_until'` });
+      return res.status(200).send({ message: `Temporary stopped by setting 'stop_keep_awake_until'` });
     }
   }
 
